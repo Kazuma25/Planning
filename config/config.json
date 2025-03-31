@@ -2,7 +2,8 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "ProjetApi-Planning",
+    "database": "bac3_projetapi-planning",
     "host": "127.0.0.1",
     "dialect": "mysql"
+  }
 }
