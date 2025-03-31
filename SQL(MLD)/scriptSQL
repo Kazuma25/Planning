@@ -1,0 +1,60 @@
+CREATE TABLE Utilisateur(
+   idUtilisateur INT,
+   email VARCHAR(50),
+   PassWord VARCHAR(50),
+   nom VARCHAR(50),
+   prenom VARCHAR(50),
+   adresse VARCHAR(50),
+   PRIMARY KEY(idUtilisateur),
+   UNIQUE(email)
+);
+
+CREATE TABLE manager(
+   idManager INT,
+   idUtilisateur INT NOT NULL,
+   PRIMARY KEY(idManager),
+   UNIQUE(idUtilisateur),
+   FOREIGN KEY(idUtilisateur) REFERENCES Utilisateur(idUtilisateur)
+);
+
+CREATE TABLE équipe(
+   idEquipe INT,
+   nom VARCHAR(50),
+   PRIMARY KEY(idEquipe)
+);
+
+CREATE TABLE Evenemement(
+   idEvent INT,
+   Nom VARCHAR(50),
+   description VARCHAR(250),
+   dateDebut DATETIME,
+   dateFin DATETIME,
+   PRIMARY KEY(idEvent)
+);
+
+CREATE TABLE Employer(
+   idEmployer INT,
+   idEquipe INT,
+   idUtilisateur INT NOT NULL,
+   PRIMARY KEY(idEmployer),
+   UNIQUE(idUtilisateur),
+   FOREIGN KEY(idEquipe) REFERENCES équipe(idEquipe),
+   FOREIGN KEY(idUtilisateur) REFERENCES Utilisateur(idUtilisateur)
+);
+
+CREATE TABLE plannig(
+   idEmployer INT,
+   idEvent INT,
+   nom VARCHAR(50),
+   PRIMARY KEY(idEmployer, idEvent),
+   FOREIGN KEY(idEmployer) REFERENCES Employer(idEmployer),
+   FOREIGN KEY(idEvent) REFERENCES Evenemement(idEvent)
+);
+
+CREATE TABLE gerer(
+   idManager INT,
+   idEquipe INT,
+   PRIMARY KEY(idManager, idEquipe),
+   FOREIGN KEY(idManager) REFERENCES manager(idManager),
+   FOREIGN KEY(idEquipe) REFERENCES équipe(idEquipe)
+);
