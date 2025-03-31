@@ -1,0 +1,1438 @@
+openapi: 3.1.1
+info:
+  title: ProjetApi-Planning
+  description: |-
+    C'est une application pour gérer des plannings avec des évenements pour chaque utilisateur .
+
+    Some useful links:
+    - [ProjetApi-Planning repository](https://github.com/Kazuma25/Planning.git)
+
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:7000
+tags:
+  - name: User
+    description: Les données des utilisateurs(identifiant / données perso).
+  - name: Employer
+    description: Les utilisateur qui sont des employers et dans qu'elle équipe ils font parties.
+  - name: Planning
+    description: Les utilisateur qui ont le planning qui a un nom et des évenement.
+  - name: Evenement
+    description: Toute les données qui conserne un évenement.
+  - name: Manager
+    description: Access to Petstore orders.
+  - name: Equipe
+    description: Contient le nom des équipes disponibles.
+paths:
+  /User:
+    get:
+      tags:
+        - User
+      summary: Donne tout les utilisateurs éxistant.
+      operationId: getAllUser
+      requestBody:
+        description: Donne tout les utilisateurs éxistant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - read:user
+  /auth/register:
+    post:
+      tags:
+        - User
+      summary: Ajoute un nouvelle utilisateur.
+      description: Ajoute un nouvelle utilisateur a la base.
+      operationId: addNewUser
+      requestBody:
+        description: Ajoute un nouvelle utilisateur a la base.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /auth/login:
+    post:
+      tags:
+        - User
+      summary: Connecte l'Utilisateur.
+      description: Connecte l'utilisateur en lui donnant .
+      operationId: getUser
+      parameters:
+        - name: petId
+          in: path
+          description: ID of pet that needs to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: name
+          in: query
+          description: Name of pet that needs to be updated
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Status of pet that needs to be updated
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully updated
+        '400':
+          description: Invalid input
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+
+  /User/:email:
+    get:
+      tags:
+        - User
+      summary: Trouve les utilisateur par email.
+      description: Sachant que l'email est unique on peut trouver un seul et unique utlisateur.
+      operationId: findUserByEmail
+      parameters:
+        - name: email
+          in: query
+          description: email unique 
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: available
+            enum:
+              - available
+              - pending
+              - sold
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - User_auth:
+            - read:User
+  /User/:name:
+    get:
+      tags:
+        - User
+      summary: Trouve les utlisateurs par nom.
+      description: Retourne tout les utilsateur qui porte le nom.
+      operationId: getUserByName
+      parameters:
+        - name: name
+          in: path
+          description: nom des utlisateurs a retourner 
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - read:user
+  /User/:id:
+    get:
+      tags:
+        - User
+      summary: Trouve les utilisateurs par id.
+      operationId: findUserById
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    delete:
+      tags:
+        - User
+      summary: Supprime un utilisateur.
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: petId
+          in: path
+          description: Pet id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid pet value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+
+  
+  /Employer:
+    get:
+      tags:
+        - Employer
+      summary: Donne tout les employers éxistant.
+      operationId: getAllEmployer
+      requestBody:
+        description: Donne tout les employers éxistant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employer'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Employer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Employer'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employer'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Employer'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - read:user
+  /Employer/:id:
+    post:
+      tags:
+        - Employer
+      summary: Ajoute un nouvelle employer.
+      description: Ajoute un nouvelle employer a la base.
+      operationId: addNewEmployer
+      requestBody:
+        description: Ajoute un nouvelle employer a la base.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employer'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Employer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Employer'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employer'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Employer'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      tags:
+        - Employer
+      summary: Trouve les Employers par id.
+      operationId: findEmployerById
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employer'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employer'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+    delete:
+      tags:
+        - Employer
+      summary: Supprime un Employer.
+      operationId: deleteEmployer
+      parameters:
+        - name: id
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: petId
+          in: path
+          description: Pet id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid pet value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+  /Employer/User/:id:
+    get:
+      tags:
+        - Employer
+      summary: Trouve l'Employers celon sont Id de User.
+      operationId: findEmployerByIdUser
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employer'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employer'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+  /Employer/Equipe/:id:
+    get:
+      tags:
+        - Employer
+      summary: Trouve les Employers par id d'équipe.
+      operationId: findAllEmployerByIdEquipe
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employer'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employer'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+  /Planning:
+    get:
+      tags:
+        - Planning
+      summary: Donne tout les Planning éxistant.
+      operationId: getAllPlanning
+      requestBody:
+        description: Donne tout les Planning éxistant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Planning'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Planning'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Planning'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Planning'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Planning'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - read:user
+  /Planning/:id:
+    post:
+      tags:
+        - Planning
+      summary: Ajoute un nouveaux Planning.
+      description: Ajoute un nouveaux Planning a la base.
+      operationId: addNewPlanning
+      requestBody:
+        description: Ajoute un nouveaux Planning a la base.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Planning'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Planning'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Planning'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Planning'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Planning'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      tags:
+        - Planning
+      summary: Trouve un Planning par id.
+      operationId: findPlanningById
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Planning'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Planning'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+    delete:
+      tags:
+        - Planning
+      summary: Supprime un Planning.
+      operationId: deletePlanning
+      parameters:
+        - name: id
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: petId
+          in: path
+          description: Pet id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid pet value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+  /Planning/event/:id:
+    get:
+      tags:
+        - Planning
+      summary: Donne tout les event associer a un planning.
+      operationId: findAllEventByPlanningId
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Planning'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Planning'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+  /Event:
+    get:
+      tags:
+        - Evenement
+      summary: Donne tout les Evenement éxistant.
+      operationId: getAllEvenement
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: date
+          in: query
+          description: date
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: date
+        - name: nom
+          in: query
+          description: nom
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      requestBody:
+        description: Donne tout les Evenement éxistant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Evenement'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Evenement'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Evenement'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Evenement'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Evenement'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - read:user
+  /Event/:id:
+    post:
+      tags:
+        - Evenement
+      summary: Ajoute un nouvelle Evenement.
+      description: Ajoute un nouvelle Evenement a la base.
+      operationId: addNewEvenement
+      requestBody:
+        description: Ajoute un nouvelle Evenement a la base.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Evenement'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Evenement'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Evenement'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Evenement'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Evenement'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      tags:
+        - Evenement
+      summary: Trouve un Evenement par id.
+      operationId: findEvenementById
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Evenement'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Evenement'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+    delete:
+      tags:
+        - Evenement
+      summary: Supprime un Evenement.
+      operationId: deleteEvent
+      parameters:
+        - name: id
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: petId
+          in: path
+          description: Pet id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid pet value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+  /Manager:
+    get:
+      tags:
+        - Manager
+      summary: Donne tout les Manager éxistant.
+      operationId: getAllManager
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      requestBody:
+        description: Donne tout les Manager éxistant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manager'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Manager'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Manager'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Manager'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - read:user
+  /Manager/User/:id:
+    get:
+      tags:
+        - Manager
+      summary: Trouve un manager par idUser.
+      operationId: findManagerById
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manager'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manager'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+  /Manager/:id:
+    post:
+      tags:
+        - Manager
+      summary: Ajoute un nouveaux Manager.
+      description: Ajoute un nouveaux Manager a la base.
+      operationId: addNewManager
+      requestBody:
+        description: Ajoute un nouveaux Manager a la base.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manager'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Manager'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Manager'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Manager'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      tags:
+        - Manager
+      summary: Trouve un Manager par id.
+      operationId: findManagerById
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manager'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manager'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+    delete:
+      tags:
+        - Manager
+      summary: Supprime un Manager.
+      operationId: deleteManager
+      parameters:
+        - name: id
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: petId
+          in: path
+          description: Manager id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid pet value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+  /Equipe:
+    get:
+      tags:
+        - Equipe
+      summary: Donne toutes les Equipe éxistant.
+      operationId: getAllEquipe
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: nom
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      requestBody:
+        description: Donne toutes les Equipe éxistant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Equipe'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Equipe'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Equipe'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipe'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Equipe'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - read:user
+  /Equipe/:id:
+    post:
+      tags:
+        - Equipe
+      summary: Ajoute une nouvelle Equipe.
+      description: Ajoute une nouvelle Equipe a la base.
+      operationId: addNewEvenement
+      requestBody:
+        description: Ajoute une nouvelle Equipe a la base.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Equipe'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Equipe'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Equipe'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipe'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Equipe'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      tags:
+        - Equipe
+      summary: Trouve une Equipe par id.
+      operationId: findEquipeById
+      parameters:
+        - name: id
+          in: query
+          description: id primary key
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Equipe'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Equipe'
+        '400':
+          description: Invalid tag value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+            - read:user
+    delete:
+      tags:
+        - Equipe
+      summary: Supprime une Equipe.
+      operationId: deleteEquipe
+      parameters:
+        - name: id
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: petId
+          in: path
+          description: Equipe id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid pet value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - user_auth:
+            - write:user
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        idUser:
+          type: integer
+          format: int64
+          examples: [10]
+        nom:
+          type: string
+          examples: [jean]
+        prenom:
+          type: string
+          examples: [mie]
+        email:
+          type: string
+          examples: [jean@email.com]
+        password:
+          type: string
+          examples: ['12345']
+        adresse:
+          type: integer
+          description: User Status
+          format: int32
+          examples: [1]
+      xml:
+        name: user
+    Employer:
+      type: object
+      properties:
+        idEmployer:
+          type: integer
+          format: int64
+        idEquipe:
+          type: integer
+          format: int64
+        idUser:
+          type: integer
+          format: int64
+      xml:
+        name: Employer
+    Planning:
+      type: object
+      properties:
+        idEmployer:
+          type: integer
+          format: int64
+        idEquipe:
+          type: integer
+          format: int64
+        nom:
+          type: string
+          examples: [doggie]
+      xml:
+        name: planning
+    Evenement:
+      type: object
+      properties:
+        idEvenement:
+          type: integer
+          format: int64
+        nom:
+          type: integer
+          format: int64
+        description:
+          type: string
+          examples: [doggie]
+        dateDebut:
+          type: date
+        dateFin:
+          type: date
+      xml:
+        name: planning
+    Manager:
+      type: object
+      properties:
+        idmanager:
+          type: integer
+          format: int64
+        idUser:
+          type: integer
+          format: int64
+      xml:
+        name: manager
+    Equipe:
+      type: object
+      properties:
+        idEquipe:
+          type: integer
+          format: int64
+        nom:
+          type: string
+      xml:
+        name: manager
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+  requestBodies:
+    Pet:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pet'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Pet'
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            "write:pets": modify pets in your account
+            "read:pets": read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
