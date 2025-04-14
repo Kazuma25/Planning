@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       // Appartenance à un utilisateur
       Appartenir.belongsTo(models.User, {
         foreignKey: 'idUtilisateur',
-        as: 'utilisateur'
+        as: 'users'
       });
 
       // Appartenance à une équipe
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Appartenir.init({
-    idUtilisateur: {
+    idUser: {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
