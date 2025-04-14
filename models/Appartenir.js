@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Appartenir.init({
-    idUser: {
+    idUtilisateur: {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
