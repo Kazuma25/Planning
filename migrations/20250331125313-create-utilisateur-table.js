@@ -11,8 +11,8 @@ module.exports = {
         unique: true,
         allowNull: false
       },
-      password: {
-        type: Sequelize.STRING(50),
+      password_field: {
+        type: Sequelize.STRING(200),
         allowNull: false
       },
       nom: {

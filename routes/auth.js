@@ -38,11 +38,9 @@ const login = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const validPassword = await bcrypt.compare(password_field, user.dataValues.password_field);
-    console.log(user.dataValues)
-    console.log(req.body)
+    const validPassword = await bcrypt.compare(password_field, user.password_field);
     if (!validPassword) {
-      return res.status(401).json({ message: user.password_field });
+      return res.status(401).json({ message: "mdp" });
     }
     const accessToken = jwtUtils.generateAccessToken(user);
     res.json({
