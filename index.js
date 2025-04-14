@@ -12,7 +12,7 @@ console.log('Database connected');
 
 // Define routes User
 const adresseRoutes = require('./routes/userRoute.js');
-app.use('/user', authenticateToken, adresseRoutes);
+app.use('/user', adresseRoutes);
 
 
 // Define routes Equipe
