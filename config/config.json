@@ -1,9 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "bac3_projetapi-planning",
+    "username": "planning",
+    "password": "planning",
+    "database": "planning",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "port": "5436",
+    "dialect": "postgres"
   }
 }

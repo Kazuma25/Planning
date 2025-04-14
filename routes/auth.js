@@ -7,13 +7,14 @@ const router = express.Router();
 
 const register = async (req, res, next) => {
   try {
-    const { password, email, nom, prenom, adresse } = req.body;
+    const { password_field, email, nom, prenom, adresse } = req.body;
     if (await User.findOne({ where: { email: email } })) {
       return res.status(400).json({ message: "Email already exists" });
     }
-    const hashedPassword = await bcrypt.hash(password, config.SALT_ROUNDS);
+    console.log(password_field);
+    const hashedPassword = await bcrypt.hash(password_field, 10);
     const newUser = User.create({
-      password: hashedPassword,
+      password_field: hashedPassword,
       email,
       nom,
       prenom,
@@ -31,17 +32,17 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password_field } = req.body;
     const user = await User.findOne({ where: { email: email } });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const validPassword = await bcrypt.compare(password, user.dataValues.password);
+    const validPassword = await bcrypt.compare(password_field, user.dataValues.password_field);
     console.log(user.dataValues)
     console.log(req.body)
     if (!validPassword) {
-      return res.status(401).json({ message: user.password });
+      return res.status(401).json({ message: user.password_field });
     }
     const accessToken = jwtUtils.generateAccessToken(user);
     res.json({
