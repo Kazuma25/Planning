@@ -55,4 +55,28 @@ router.delete("/del/:id", async (req, res) => {
   }
 });
 
+// PATCH : Modifier une équipe
+router.patch("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nom } = req.body;
+
+    const equipe = await Equipe.findByPk(id);
+
+    if (!equipe) {
+      return res.status(404).json({ error: "Équipe non trouvée" });
+    }
+
+    if (nom) {
+      equipe.nom = nom;
+    }
+    await equipe.save();
+
+    res.status(200).json(equipe);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 module.exports = router;

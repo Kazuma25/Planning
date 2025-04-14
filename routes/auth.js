@@ -6,19 +6,18 @@ const express = require("express");
 const router = express.Router();
 
 const register = async (req, res, next) => {
-  try {
+    try {
     const { password_field, email, nom, prenom, adresse } = req.body;
-    if (await User.findOne({ where: { email: email } })) {
-      return res.status(400).json({ message: "Email already exists" });
+    if (await User.findOne({where: {email: email}})) {
+    return res.status(400).json({ message: 'Email already exists' });
     }
-    console.log(password_field);
-    const hashedPassword = await bcrypt.hash(password_field, 10);
+    const hashedPassword = await bcrypt.hash(password_field, config.SALT_ROUNDS);
     const newUser = User.create({
-      password_field: hashedPassword,
-      email,
-      nom,
-      prenom,
-      adresse,
+        password_field: hashedPassword,
+    email,
+    nom,
+    prenom,
+    adresse
     });
     const { password: _, ...userWithoutPassword } = newUser;
     res.status(201).json({
@@ -31,13 +30,12 @@ const register = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  try {
+    try {
     const { email, password_field } = req.body;
-    const user = await User.findOne({ where: { email: email } });
+    const user = await User.findOne({where: {email: email}});
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-
     const validPassword = await bcrypt.compare(password_field, user.password_field);
     if (!validPassword) {
       return res.status(401).json({ message: "mdp" });
