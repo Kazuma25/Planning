@@ -12,25 +12,25 @@ console.log('Database connected');
 
 // Define routes User
 const adresseRoutes = require('./routes/userRoute.js');
-app.use('/users',authenticateToken, adresseRoutes);
+app.use('/users', adresseRoutes);
 
 
 // Define routes Equipe
 const equipeRoutes = require('./routes/Equipe');
-app.use('/equipes',authenticateToken, equipeRoutes);
+app.use('/equipes', equipeRoutes);
 
 // Define routes Planning
 const planningRoutes = require('./routes/Planning');
-app.use('/plannings',authenticateToken, planningRoutes);
+app.use('/plannings', planningRoutes);
 
 // Define routes Appartenir
 const appartenirRoutes = require('./routes/Appartenir');
-app.use('/appartenances', authenticateToken, appartenirRoutes);
+app.use('/appartenances', appartenirRoutes);
 
 
 // Define routes Evenement
 const evenementRoutes = require('./routes/Evenement');
-app.use('/evenements',authenticateToken, evenementRoutes);
+app.use('/evenements', evenementRoutes);
 
 
 // Define routes Auth
