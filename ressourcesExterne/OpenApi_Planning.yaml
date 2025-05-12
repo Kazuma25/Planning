@@ -30,19 +30,6 @@ paths:
         - User
       summary: Donne tout les utilisateurs éxistant.
       operationId: getAllUser
-      requestBody:
-        description: Donne tout les utilisateurs éxistant.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -61,9 +48,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - read:user
   /auth/register:
     post:
       tags:
@@ -110,8 +94,8 @@ paths:
       description: Connecte l'utilisateur en lui donnant .
       operationId: getUser
       parameters:
-        - name: petId
-          in: path
+        - name: id
+          in: query
           description: ID of pet that needs to be updated
           required: true
           schema:
@@ -185,9 +169,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - User_auth:
-            - read:User
   /User/:name:
     get:
       tags:
@@ -201,8 +182,7 @@ paths:
           description: nom des utlisateurs a retourner 
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: successful operation
@@ -223,9 +203,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - read:user
   /User/:id:
     get:
       tags:
@@ -280,13 +257,6 @@ paths:
           required: false
           schema:
             type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         '200':
           description: successful operation
@@ -298,9 +268,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
 
   
   /Employer:
@@ -309,19 +276,6 @@ paths:
         - Employer
       summary: Donne tout les employers éxistant.
       operationId: getAllEmployer
-      requestBody:
-        description: Donne tout les employers éxistant.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Employer'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Employer'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Employer'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -340,9 +294,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - read:user
   /Employer/:id:
     post:
       tags:
@@ -418,10 +369,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
     delete:
       tags:
         - Employer
@@ -434,13 +381,6 @@ paths:
           required: false
           schema:
             type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         '200':
           description: successful operation
@@ -452,9 +392,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
   /Employer/User/:id:
     get:
       tags:
@@ -493,10 +430,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
   /Employer/Equipe/:id:
     get:
       tags:
@@ -535,29 +468,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
   /Planning:
     get:
       tags:
         - Planning
       summary: Donne tout les Planning éxistant.
       operationId: getAllPlanning
-      requestBody:
-        description: Donne tout les Planning éxistant.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Planning'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Planning'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Planning'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -576,9 +492,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - read:user
   /Planning/:id:
     post:
       tags:
@@ -654,43 +567,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
-    delete:
-      tags:
-        - Planning
-      summary: Supprime un Planning.
-      operationId: deletePlanning
-      parameters:
-        - name: id
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-        '400':
-          description: Invalid pet value
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
   /Planning/event/:id:
     get:
       tags:
@@ -729,57 +605,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
   /Event:
     get:
       tags:
         - Evenement
       summary: Donne tout les Evenement éxistant.
       operationId: getAllEvenement
-      parameters:
-        - name: id
-          in: query
-          description: id primary key
-          required: false
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-        - name: date
-          in: query
-          description: date
-          required: false
-          explode: true
-          schema:
-            type: array
-            items:
-              type: date
-        - name: nom
-          in: query
-          description: nom
-          required: false
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-      requestBody:
-        description: Donne tout les Evenement éxistant.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Evenement'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Evenement'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Evenement'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -798,10 +629,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - read:user
-  /Event/:id:
+  /Evenement/:id:
     post:
       tags:
         - Evenement
@@ -876,10 +704,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
     delete:
       tags:
         - Evenement
@@ -887,14 +711,8 @@ paths:
       operationId: deleteEvent
       parameters:
         - name: id
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
-        - name: petId
           in: path
-          description: Pet id to delete
+          description: idEvenement to delete
           required: true
           schema:
             type: integer
@@ -910,9 +728,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
   /Manager:
     get:
       tags:
@@ -929,19 +744,6 @@ paths:
             type: array
             items:
               type: string
-      requestBody:
-        description: Donne tout les Manager éxistant.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Manager'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Manager'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Manager'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -960,15 +762,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - read:user
   /Manager/User/:id:
     get:
       tags:
         - Manager
       summary: Trouve un manager par idUser.
-      operationId: findManagerById
+      operationId: findManagerByIdUser
       parameters:
         - name: id
           in: query
@@ -1001,10 +800,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
   /Manager/:id:
     post:
       tags:
@@ -1080,10 +875,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
     delete:
       tags:
         - Manager
@@ -1096,13 +887,6 @@ paths:
           required: false
           schema:
             type: string
-        - name: petId
-          in: path
-          description: Manager id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         '200':
           description: successful operation
@@ -1114,9 +898,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
   /Equipe:
     get:
       tags:
@@ -1142,19 +923,6 @@ paths:
             type: array
             items:
               type: string
-      requestBody:
-        description: Donne toutes les Equipe éxistant.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Equipe'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Equipe'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Equipe'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -1173,16 +941,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - read:user
   /Equipe/:id:
     post:
       tags:
         - Equipe
       summary: Ajoute une nouvelle Equipe.
       description: Ajoute une nouvelle Equipe a la base.
-      operationId: addNewEvenement
+      operationId: addNewEquipe
       requestBody:
         description: Ajoute une nouvelle Equipe a la base.
         content:
@@ -1251,10 +1016,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
-            - read:user
     delete:
       tags:
         - Equipe
@@ -1267,13 +1028,6 @@ paths:
           required: false
           schema:
             type: string
-        - name: petId
-          in: path
-          description: Equipe id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         '200':
           description: successful operation
@@ -1285,9 +1039,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      security:
-        - user_auth:
-            - write:user
 components:
   schemas:
     User:
@@ -1296,24 +1047,18 @@ components:
         idUser:
           type: integer
           format: int64
-          examples: [10]
         nom:
           type: string
-          examples: [jean]
         prenom:
           type: string
-          examples: [mie]
         email:
           type: string
-          examples: [jean@email.com]
         password:
           type: string
-          examples: ['12345']
         adresse:
           type: integer
           description: User Status
           format: int32
-          examples: [1]
       xml:
         name: user
     Employer:
@@ -1341,7 +1086,6 @@ components:
           format: int64
         nom:
           type: string
-          examples: [doggie]
       xml:
         name: planning
     Evenement:
@@ -1355,7 +1099,6 @@ components:
           format: int64
         description:
           type: string
-          examples: [doggie]
         dateDebut:
           type: date
         dateFin:
@@ -1383,18 +1126,6 @@ components:
           type: string
       xml:
         name: manager
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        type:
-          type: string
-        message:
-          type: string
-      xml:
-        name: '##default'
     Error:
       type: object
       properties:
