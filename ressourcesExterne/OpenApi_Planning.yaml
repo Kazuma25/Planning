@@ -203,7 +203,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /User/:id:
+  /User/{id}:
+    patch:
+      tags:
+        - User
+      summary: Met à jour un utilisateur partiellement.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'utilisateur à mettre à jour
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Données à mettre à jour partiellement pour l'utilisateur
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Utilisateur mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Données invalides
+        '404':
+          description: Utilisateur non trouvé
+        default:
+          description: Erreur inattendue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     get:
       tags:
         - User
@@ -295,6 +332,43 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
   /Employer/:id:
+    patch:
+      tags:
+        - Employer
+      summary: Met à jour un Employer partiellement.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'utilisateur à mettre à jour
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Données à mettre à jour partiellement pour l'utilisateur
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Utilisateur mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Données invalides
+        '404':
+          description: Utilisateur non trouvé
+        default:
+          description: Erreur inattendue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Employer
@@ -493,6 +567,43 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
   /Planning/:id:
+    patch:
+      tags:
+        - Planning
+      summary: Met à jour un Planning partiellement.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'utilisateur à mettre à jour
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Données à mettre à jour partiellement pour l'utilisateur
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Utilisateur mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Données invalides
+        '404':
+          description: Utilisateur non trouvé
+        default:
+          description: Erreur inattendue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Planning
@@ -629,7 +740,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /Evenement/:id:
+  /Event/:id:
+    patch:
+      tags:
+        - Evenement
+      summary: Met à jour un Evenement partiellement.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'utilisateur à mettre à jour
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Données à mettre à jour partiellement pour l'utilisateur
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Utilisateur mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Données invalides
+        '404':
+          description: Utilisateur non trouvé
+        default:
+          description: Erreur inattendue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Evenement
@@ -801,6 +949,43 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
   /Manager/:id:
+    patch:
+      tags:
+        - Manager
+      summary: Met à jour un Manager partiellement.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'utilisateur à mettre à jour
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Données à mettre à jour partiellement pour l'utilisateur
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Utilisateur mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Données invalides
+        '404':
+          description: Utilisateur non trouvé
+        default:
+          description: Erreur inattendue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Manager
@@ -942,6 +1127,43 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
   /Equipe/:id:
+    patch:
+      tags:
+        - Equipe
+      summary: Met à jour une Equipe partiellement.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'utilisateur à mettre à jour
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Données à mettre à jour partiellement pour l'utilisateur
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Utilisateur mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Données invalides
+        '404':
+          description: Utilisateur non trouvé
+        default:
+          description: Erreur inattendue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Equipe
